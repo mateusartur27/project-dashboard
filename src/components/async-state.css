@@ -1,0 +1,8 @@
+.async-note {
+  font-size: 13.5px;
+  color: var(--text-faint);
+}
+
+.async-note-error {
+  color: var(--danger);
+}

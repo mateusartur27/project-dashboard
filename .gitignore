@@ -1,0 +1,32 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+.wrangler
+
+# Credenciais locais para `wrangler pages dev`. Nunca versionadas.
+.dev.vars
+.dev.vars.*
+
+# Conteúdo real do sistema de origem: fica só no Cloudflare KV, nunca no Git.
+private-data/
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

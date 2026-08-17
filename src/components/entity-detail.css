@@ -1,0 +1,127 @@
+.entity-detail {
+  max-width: 760px;
+}
+
+.entity-detail-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-bottom: 20px;
+}
+
+.entity-detail-back:hover {
+  color: var(--accent);
+}
+
+.entity-detail-header {
+  margin-bottom: 24px;
+}
+
+.entity-detail-tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.entity-detail-phase {
+  display: inline-block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.entity-detail-header h1 {
+  margin: 0 0 8px;
+  font-family: var(--font-mono);
+  font-size: 22px;
+}
+
+.entity-detail-header p {
+  margin: 0 0 10px;
+  color: var(--text-muted);
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+.entity-detail-path {
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.entity-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.entity-detail-field {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+
+.entity-detail-field h3 {
+  margin: 0 0 6px;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+}
+
+.entity-detail-field p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  white-space: pre-line;
+}
+
+.entity-detail-highlight {
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  border: 1px solid transparent;
+}
+
+.entity-detail-highlight-warn {
+  background: var(--warn-soft);
+}
+
+.entity-detail-highlight-ok {
+  background: var(--ok-soft);
+}
+
+.entity-detail-highlight h3 {
+  margin: 0 0 6px;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.entity-detail-highlight-warn h3 {
+  color: var(--warn);
+}
+
+.entity-detail-highlight-ok h3 {
+  color: var(--ok);
+}
+
+.entity-detail-highlight p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text);
+  white-space: pre-line;
+}
+
+@media (max-width: 560px) {
+  .entity-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}

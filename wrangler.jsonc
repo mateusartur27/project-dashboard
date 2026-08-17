@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "project-dashboard",
+  "compatibility_date": "2026-08-17",
+  "pages_build_output_dir": "dist",
+  "kv_namespaces": [
+    {
+      "binding": "LOGIN_RATE_LIMIT",
+      "id": "cdf1e9d4cfcd46199140463971cd1bdf"
+    },
+    {
+      "binding": "DASHBOARD_DATA",
+      "id": "da5892b9f7b14fc5ac1321e7b54cc9e2"
+    }
+  ]
+}

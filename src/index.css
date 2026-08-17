@@ -1,0 +1,102 @@
+:root {
+  --bg: #f4f5f7;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --border: #e2e4ea;
+  --text: #14161c;
+  --text-muted: #5b616e;
+  --text-faint: #8a90a0;
+  --accent: #3457d5;
+  --accent-soft: #e8edfc;
+  --accent-contrast: #ffffff;
+  --danger: #c62839;
+  --danger-soft: #fbe6e8;
+  --ok: #1f8a4c;
+  --ok-soft: #e5f6ec;
+  --warn: #a86400;
+  --warn-soft: #fbf0dd;
+  --shadow: 0 1px 2px rgba(20, 22, 28, 0.06), 0 4px 16px rgba(20, 22, 28, 0.06);
+  --radius: 12px;
+  --font-sans: -apple-system, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1115;
+    --surface: #171a21;
+    --surface-raised: #1e222b;
+    --border: #2a2f3a;
+    --text: #eceef2;
+    --text-muted: #9aa1b1;
+    --text-faint: #6b7182;
+    --accent: #7c9bff;
+    --accent-soft: #202a4a;
+    --accent-contrast: #0f1115;
+    --danger: #ff6b7a;
+    --danger-soft: #3a1e22;
+    --ok: #4fd189;
+    --ok-soft: #123424;
+    --warn: #f0b34d;
+    --warn-soft: #3a2c10;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #0f1115;
+  --surface: #171a21;
+  --surface-raised: #1e222b;
+  --border: #2a2f3a;
+  --text: #eceef2;
+  --text-muted: #9aa1b1;
+  --text-faint: #6b7182;
+  --accent: #7c9bff;
+  --accent-soft: #202a4a;
+  --accent-contrast: #0f1115;
+  --danger: #ff6b7a;
+  --danger-soft: #3a1e22;
+  --ok: #4fd189;
+  --ok-soft: #123424;
+  --warn: #f0b34d;
+  --warn-soft: #3a2c10;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}
+
+code,
+pre {
+  font-family: var(--font-mono);
+}

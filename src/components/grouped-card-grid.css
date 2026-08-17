@@ -1,0 +1,39 @@
+.grouped-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.grouped-grid-intro h1 {
+  margin: 0 0 6px;
+  font-size: 22px;
+}
+
+.grouped-grid-intro p {
+  margin: 0;
+  color: var(--text-muted);
+  max-width: 720px;
+  font-size: 14px;
+}
+
+.grouped-grid-header {
+  margin-bottom: 12px;
+}
+
+.grouped-grid-header h2 {
+  margin: 0 0 2px;
+  font-size: 15px;
+  letter-spacing: 0.01em;
+}
+
+.grouped-grid-header p {
+  margin: 0;
+  color: var(--text-faint);
+  font-size: 12.5px;
+}
+
+.grouped-grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}

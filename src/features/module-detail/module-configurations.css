@@ -1,0 +1,38 @@
+.module-configurations {
+  max-width: 760px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.module-configurations h2 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.module-configurations-intro {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.module-configurations-intro code {
+  background: var(--accent-soft);
+  color: var(--accent);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.module-configurations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.module-configurations-empty {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-faint);
+  font-style: italic;
+}
