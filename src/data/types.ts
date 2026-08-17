@@ -130,3 +130,13 @@ export interface ChannelMappingData {
   usesToModuleId: Record<string, string>;
   alwaysOnModuleIds: string[];
 }
+
+export type PlannedChannelStatus = "planned" | "in-progress" | "launched";
+
+export interface PlannedChannelDefinition {
+  id: string;
+  title: string;
+  status: PlannedChannelStatus;
+  summary: string;
+  detail: string;
+}

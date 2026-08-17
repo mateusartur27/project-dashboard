@@ -2,12 +2,24 @@
   max-width: 760px;
 }
 
+.entity-detail-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.entity-detail-actions {
+  display: flex;
+  gap: 8px;
+}
+
 .entity-detail-back {
   display: inline-block;
   font-size: 13px;
   color: var(--text-muted);
   text-decoration: none;
-  margin-bottom: 20px;
 }
 
 .entity-detail-back:hover {

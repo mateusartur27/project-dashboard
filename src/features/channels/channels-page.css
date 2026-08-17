@@ -1,0 +1,16 @@
+.channels-page {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.planned-channels-section {
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.planned-channels-empty {
+  font-size: 13px;
+  color: var(--text-faint);
+  font-style: italic;
+}

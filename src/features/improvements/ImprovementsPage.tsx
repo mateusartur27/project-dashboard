@@ -1,11 +1,15 @@
+import { useState } from "react";
 import { GroupedCardGrid } from "../../components/GroupedCardGrid";
 import { LoadingNote, ErrorNote } from "../../components/AsyncState";
-import { useRemoteData } from "../../hooks/useRemoteData";
+import { useEditableRemoteData } from "../../hooks/useEditableRemoteData";
 import { improvementsByCategory, type ImprovementsData } from "../../data/improvements";
+import type { ImprovementDefinition } from "../../data/types";
 import { ImprovementCard } from "./ImprovementCard";
+import { ImprovementFormModal } from "./ImprovementFormModal";
 
 export function ImprovementsPage() {
-  const state = useRemoteData<ImprovementsData>("improvements");
+  const { state, save } = useEditableRemoteData<ImprovementsData>("improvements");
+  const [showForm, setShowForm] = useState(false);
 
   if (state.kind === "loading") {
     return <LoadingNote label="Carregando melhorias…" />;
@@ -15,19 +19,41 @@ export function ImprovementsPage() {
     return <ErrorNote message={state.message} />;
   }
 
-  const groups = improvementsByCategory(state.data).map((group) => ({
+  const { data } = state;
+  const groups = improvementsByCategory(data).map((group) => ({
     key: group.category.id,
     title: group.category.label,
     description: group.category.description,
     items: group.improvements,
   }));
 
+  async function handleCreate(improvement: ImprovementDefinition) {
+    await save({ ...data, improvements: [...data.improvements, improvement] });
+    setShowForm(false);
+  }
+
   return (
-    <GroupedCardGrid
-      heading="Melhorias a implementar"
-      intro="Backlog real de expansão do sistema, agrupado como no documento de origem. Cada card mostra se o item já foi resolvido, se recebeu um contorno paliativo ou se ainda está em aberto — clique para o contexto completo, com datas e execuções reais que sustentam cada decisão."
-      groups={groups}
-      renderItem={(improvement) => <ImprovementCard key={improvement.id} improvement={improvement} />}
-    />
+    <>
+      <GroupedCardGrid
+        heading="Melhorias a implementar"
+        intro="Backlog real de expansão do sistema. Cada card mostra se o item já foi resolvido, se recebeu um contorno paliativo ou se ainda está em aberto — clique para o contexto completo."
+        controls={
+          <button type="button" className="add-entity-btn" onClick={() => setShowForm(true)}>
+            + Nova melhoria
+          </button>
+        }
+        groups={groups}
+        renderItem={(improvement) => <ImprovementCard key={improvement.id} improvement={improvement} />}
+      />
+
+      {showForm && (
+        <ImprovementFormModal
+          categories={data.categories}
+          existingIds={data.improvements.map((improvement) => improvement.id)}
+          onClose={() => setShowForm(false)}
+          onSubmit={handleCreate}
+        />
+      )}
+    </>
   );
 }

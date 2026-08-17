@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import "./entity-detail.css";
 
@@ -22,6 +23,7 @@ export function EntityDetail({
   meta,
   fields,
   highlight,
+  actions,
 }: {
   backTo: string;
   backLabel: string;
@@ -32,12 +34,16 @@ export function EntityDetail({
   meta?: string;
   fields: EntityDetailField[];
   highlight?: EntityDetailHighlight;
+  actions?: ReactNode;
 }) {
   return (
     <div className="entity-detail">
-      <Link to={backTo} className="entity-detail-back">
-        ← {backLabel}
-      </Link>
+      <div className="entity-detail-topbar">
+        <Link to={backTo} className="entity-detail-back">
+          ← {backLabel}
+        </Link>
+        {actions}
+      </div>
 
       <header className="entity-detail-header">
         <div className="entity-detail-tags">

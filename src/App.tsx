@@ -7,6 +7,7 @@ import { ImprovementDetailPage } from "./features/improvements/ImprovementDetail
 import { ConfigurationDetailPage } from "./features/configurations/ConfigurationDetailPage";
 import { ChannelsPage } from "./features/channels/ChannelsPage";
 import { ChannelDetailPage } from "./features/channels/ChannelDetailPage";
+import { PlannedChannelDetailPage } from "./features/channels/PlannedChannelDetailPage";
 import { RulesPage } from "./features/rules/RulesPage";
 import { RuleDetailPage } from "./features/rules/RuleDetailPage";
 import { LoginPage } from "./features/auth/LoginPage";
@@ -24,6 +25,7 @@ export default function App() {
           <Route path="/configurations/:configId" element={<ConfigurationDetailPage />} />
           <Route path="/channels" element={<ChannelsPage />} />
           <Route path="/channels/:channelId" element={<ChannelDetailPage />} />
+          <Route path="/planned-channels/:plannedChannelId" element={<PlannedChannelDetailPage />} />
           <Route path="/rules" element={<RulesPage />} />
           <Route path="/rules/:ruleId" element={<RuleDetailPage />} />
         </Route>
