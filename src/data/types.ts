@@ -85,7 +85,7 @@ export interface LiveChannelConfig {
     content: { durationSeconds: { min: number; target: number; max: number } };
     video: { width: number; height: number; fps: number; codec: string };
   };
-  pipeline: Array<{ id: string; uses: string }>;
+  pipeline: Array<{ id: string; uses: string; with?: Record<string, unknown> }>;
 }
 
 export interface LiveChannelDetail {
@@ -95,27 +95,11 @@ export interface LiveChannelDetail {
   config: LiveChannelConfig;
 }
 
-export interface ModuleConfigurationSetting {
-  label: string;
-  value: string;
-}
-
 export interface RuleDefinition {
   id: string;
   title: string;
   rule: string;
   source: string;
-}
-
-export interface ModuleConfiguration {
-  id: string;
-  moduleId: string;
-  stepId: string;
-  usesIdentifier: string;
-  channelId: string;
-  channelName: string;
-  summary: string;
-  settings: ModuleConfigurationSetting[];
 }
 
 export interface ArchitectureData {

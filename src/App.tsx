@@ -4,7 +4,6 @@ import { DashboardPage } from "./features/dashboard/DashboardPage";
 import { ModuleDetailPage } from "./features/module-detail/ModuleDetailPage";
 import { ImprovementsPage } from "./features/improvements/ImprovementsPage";
 import { ImprovementDetailPage } from "./features/improvements/ImprovementDetailPage";
-import { ConfigurationDetailPage } from "./features/configurations/ConfigurationDetailPage";
 import { ChannelsPage } from "./features/channels/ChannelsPage";
 import { ChannelDetailPage } from "./features/channels/ChannelDetailPage";
 import { PlannedChannelDetailPage } from "./features/channels/PlannedChannelDetailPage";
@@ -22,7 +21,6 @@ export default function App() {
           <Route path="/improvements/:improvementId" element={<ImprovementDetailPage />} />
           <Route path="/modules" element={<DashboardPage />} />
           <Route path="/modules/:moduleId" element={<ModuleDetailPage />} />
-          <Route path="/configurations/:configId" element={<ConfigurationDetailPage />} />
           <Route path="/channels" element={<ChannelsPage />} />
           <Route path="/channels/:channelId" element={<ChannelDetailPage />} />
           <Route path="/planned-channels/:plannedChannelId" element={<PlannedChannelDetailPage />} />

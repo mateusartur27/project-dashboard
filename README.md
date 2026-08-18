@@ -40,13 +40,15 @@ npx wrangler pages secret put CONTROL_PLANE_BASE_URL --project-name=project-dash
 
 Sem esse secret, `/api/live-channels` responde `503` em vez de expor um endereço padrão.
 
-## Conteúdo do painel (módulos, melhorias, configurações, regras, arquitetura, canais planejados)
+## Conteúdo do painel (módulos, melhorias, regras, arquitetura, canais planejados)
 
 Vive só no KV `DASHBOARD_DATA`, servido via `functions/api/data.ts`. `src/data/*.ts` só tem os tipos e funções puras sobre esse formato — nenhum dado literal no código. Editável diretamente pelo painel (melhorias e canais planejados) ou por script.
 
-Editar por fora do painel:
+Configuração por módulo (a seção "Configurações existentes" na página de um módulo) **não** vem do KV — é computada ao vivo a partir do `with` de cada etapa de cada canal registrado (via `/api/live-channels`), agrupando canais que declaram o mesmo conjunto. Nunca fica desatualizada porque nunca é guardada.
 
-1. Editar o JSON correspondente em `private-data/` (fora do Git — chaves: `modules`, `improvements`, `configurations`, `rules`, `architecture`, `channel-mapping`, `planned-channels`).
+Editar o resto por fora do painel:
+
+1. Editar o JSON correspondente em `private-data/` (fora do Git — chaves: `modules`, `improvements`, `rules`, `architecture`, `channel-mapping`, `planned-channels`).
 2. Sincronizar para o KV local, para testar: `npm run sync-data`
 3. Sincronizar para o KV real, quando estiver pronto: `npm run sync-data:remote`
 
