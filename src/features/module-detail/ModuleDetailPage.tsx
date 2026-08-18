@@ -89,9 +89,10 @@ export function ModuleDetailPage() {
                     {groups.map((group) => (
                       <div key={group.key} className="configuration-group-card">
                         <div className="configuration-group-header">
-                          <span className="configuration-group-channels">{group.channelNames.join(" + ")}</span>
+                          <span className="configuration-group-name">{group.name}</span>
                           <code className="configuration-group-uses">{group.usesIdentifier}</code>
                         </div>
+                        <p className="configuration-group-channels">Usado por: {group.channelNames.join(", ")}</p>
                         {group.settings.length > 0 ? (
                           <dl className="configuration-group-settings">
                             {group.settings.map((setting) => (

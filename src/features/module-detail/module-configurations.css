@@ -53,13 +53,19 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 8px;
-  margin-bottom: 10px;
   flex-wrap: wrap;
 }
 
-.configuration-group-channels {
+.configuration-group-name {
   font-weight: 600;
-  font-size: 13px;
+  font-size: 13.5px;
+  font-family: var(--font-mono);
+}
+
+.configuration-group-channels {
+  margin: 3px 0 10px;
+  font-size: 11.5px;
+  color: var(--text-faint);
 }
 
 .configuration-group-uses {
