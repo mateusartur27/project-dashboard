@@ -110,11 +110,6 @@ export interface ArchitectureData {
   flow: string[];
 }
 
-export interface ChannelMappingData {
-  usesToModuleId: Record<string, string>;
-  alwaysOnModuleIds: string[];
-}
-
 export type PlannedChannelStatus = "planned" | "in-progress" | "launched";
 
 export interface PlannedChannelDefinition {

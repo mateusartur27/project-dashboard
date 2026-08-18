@@ -19,3 +19,13 @@ export async function fetchChannelDetail(channelId: string): Promise<LiveChannel
   }
   return (await response.json()) as LiveChannelDetail;
 }
+
+/** Qual módulo implementa cada `uses` — direto do registro real, nunca copiado à mão. */
+export async function fetchModuleRegistry(): Promise<Record<string, string>> {
+  const response = await fetch("/api/module-registry", { credentials: "same-origin" });
+  if (!response.ok) {
+    throw new Error(`module-registry respondeu ${response.status}`);
+  }
+  const body = (await response.json()) as { usesToModule: Record<string, string> };
+  return body.usesToModule;
+}

@@ -3,17 +3,18 @@ import { useSearchParams } from "react-router-dom";
 import { GroupedCardGrid } from "../../components/GroupedCardGrid";
 import { LoadingNote, ErrorNote } from "../../components/AsyncState";
 import { useRemoteData } from "../../hooks/useRemoteData";
+import { useModuleRegistry } from "../../hooks/useModuleRegistry";
 import { modulesByPhase, type ModulesData } from "../../data/modules";
 import { deriveUsesModuleIds, isModuleUsedByChannel } from "../../data/channels";
 import { fetchChannelDetail, fetchChannelSummaries } from "../../lib/liveChannels";
-import type { ChannelMappingData, LiveChannelSummary } from "../../data/types";
+import type { LiveChannelSummary } from "../../data/types";
 import { ModuleCard } from "./ModuleCard";
 import { ChannelFilter } from "./ChannelFilter";
 
 export function DashboardPage() {
   const [searchParams] = useSearchParams();
   const modulesState = useRemoteData<ModulesData>("modules");
-  const mappingState = useRemoteData<ChannelMappingData>("channel-mapping");
+  const mappingState = useModuleRegistry();
 
   const [channels, setChannels] = useState<LiveChannelSummary[]>([]);
   const [selectedChannelId, setSelectedChannelId] = useState<string | null>(() => searchParams.get("channel"));
@@ -31,11 +32,11 @@ export function DashboardPage() {
       return;
     }
     let cancelled = false;
-    const mapping = mappingState.data;
+    const usesToModule = mappingState.data;
     fetchChannelDetail(selectedChannelId)
       .then((channel) => {
         if (cancelled) return;
-        setUsedModuleIds(channel ? deriveUsesModuleIds(mapping, channel.config.pipeline) : []);
+        setUsedModuleIds(channel ? deriveUsesModuleIds(usesToModule, channel.config.pipeline) : []);
       })
       .catch(() => {
         if (!cancelled) setUsedModuleIds([]);
@@ -74,7 +75,7 @@ export function DashboardPage() {
         <ModuleCard
           key={module.id}
           module={module}
-          dimmed={usedModuleIds ? !isModuleUsedByChannel(mappingState.data, module.id, usedModuleIds) : false}
+          dimmed={usedModuleIds ? !isModuleUsedByChannel(module.id, usedModuleIds) : false}
         />
       )}
     />

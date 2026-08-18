@@ -12,7 +12,7 @@ interface RequestContext {
   env: Env;
 }
 
-const ALLOWED_KEYS = new Set(["modules", "improvements", "rules", "architecture", "channel-mapping", "planned-channels"]);
+const ALLOWED_KEYS = new Set(["modules", "improvements", "rules", "architecture", "planned-channels"]);
 
 function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json" } });
@@ -27,9 +27,9 @@ function keyFrom(request: Request): string | null {
  * Serve módulos, melhorias, regras, arquitetura e canais planejados a partir
  * do KV, nunca do bundle do cliente nem do repositório. Fica atrás do mesmo
  * gate de sessão que o resto de `/api/*` — `_middleware.ts` bloqueia sem
- * cookie válido. Configuração por canal não vem daqui — é computada ao vivo
- * a partir da config real de cada canal (`/api/live-channels`), nunca
- * guardada.
+ * cookie válido. Configuração por canal e a atribuição `uses -> módulo` não
+ * vêm daqui — são buscadas ao vivo do control plane real (`/api/live-channels`,
+ * `/api/module-registry`), nunca guardadas.
  */
 export async function onRequestGet(context: RequestContext): Promise<Response> {
   const key = keyFrom(context.request);

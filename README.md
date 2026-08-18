@@ -44,11 +44,11 @@ Sem esse secret, `/api/live-channels` responde `503` em vez de expor um endereç
 
 Vive só no KV `DASHBOARD_DATA`, servido via `functions/api/data.ts`. `src/data/*.ts` só tem os tipos e funções puras sobre esse formato — nenhum dado literal no código. Editável diretamente pelo painel (melhorias e canais planejados) ou por script.
 
-Configuração por módulo (a seção "Configurações existentes" na página de um módulo) **não** vem do KV — é computada ao vivo a partir do `with` de cada etapa de cada canal registrado (via `/api/live-channels`), agrupando canais que declaram o mesmo conjunto. Nunca fica desatualizada porque nunca é guardada.
+Configuração por módulo (a seção "Configurações existentes" na página de um módulo) **não** vem do KV — é computada ao vivo a partir do `with` de cada etapa de cada canal registrado (via `/api/live-channels`), agrupando canais que declaram o mesmo conjunto. A atribuição de qual módulo implementa cada `uses` também não vem do KV — vem de `/api/module-registry`, no control plane real. Nenhuma das duas fica desatualizada porque nenhuma é guardada.
 
 Editar o resto por fora do painel:
 
-1. Editar o JSON correspondente em `private-data/` (fora do Git — chaves: `modules`, `improvements`, `rules`, `architecture`, `channel-mapping`, `planned-channels`).
+1. Editar o JSON correspondente em `private-data/` (fora do Git — chaves: `modules`, `improvements`, `rules`, `architecture`, `planned-channels`).
 2. Sincronizar para o KV local, para testar: `npm run sync-data`
 3. Sincronizar para o KV real, quando estiver pronto: `npm run sync-data:remote`
 

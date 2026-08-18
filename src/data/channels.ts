@@ -1,21 +1,37 @@
-import type { ChannelMappingData } from "./types";
+/**
+ * `uses -> módulo` vem ao vivo de `/api/module-registry` (proxy para o
+ * control plane real) — nunca copiado aqui. O que fica aqui é só a
+ * categorização própria do painel (quais módulos são infraestrutura,
+ * sempre ativa, sem `uses` próprio) e funções puras.
+ */
 
 /**
- * O mapeamento `uses` → módulo e os módulos sempre-ativos vêm do KV via
- * `/api/data?key=channel-mapping` — este arquivo só tem funções puras sobre
- * ele, mais o formatador de cron, que não depende de dado nenhum.
+ * Módulos de infraestrutura/orquestração que todo canal usa por construção
+ * — nunca têm `uses` próprio no registro real, então nunca ficam
+ * escurecidos pelo filtro por canal. Categorização editorial do painel, não
+ * dado que muda com o sistema de origem — daí não vir de uma API.
  */
-export function deriveUsesModuleIds(mapping: ChannelMappingData, pipeline: Array<{ uses: string }>): string[] {
+export const ALWAYS_ON_MODULE_IDS: string[] = [
+  "channel-config",
+  "channel-registry",
+  "scheduler",
+  "persistence",
+  "pipeline-orchestrator",
+  "pipeline-runtime",
+  "video-run-coordination",
+];
+
+export function deriveUsesModuleIds(usesToModule: Record<string, string>, pipeline: Array<{ uses: string }>): string[] {
   const ids = new Set<string>();
   for (const step of pipeline) {
-    const moduleId = mapping.usesToModuleId[step.uses];
+    const moduleId = usesToModule[step.uses];
     if (moduleId) ids.add(moduleId);
   }
   return [...ids];
 }
 
-export function isModuleUsedByChannel(mapping: ChannelMappingData, moduleId: string, usesModuleIds: string[]): boolean {
-  return mapping.alwaysOnModuleIds.includes(moduleId) || usesModuleIds.includes(moduleId);
+export function isModuleUsedByChannel(moduleId: string, usesModuleIds: string[]): boolean {
+  return ALWAYS_ON_MODULE_IDS.includes(moduleId) || usesModuleIds.includes(moduleId);
 }
 
 export function formatCronDaily(cron: string): string {

@@ -1,4 +1,4 @@
-import type { ChannelMappingData, LiveChannelDetail } from "./types";
+import type { LiveChannelDetail } from "./types";
 
 /**
  * Configurações de módulo, computadas ao vivo — nunca armazenadas. Um canal
@@ -84,11 +84,11 @@ function findConfigurationName(withBlock: Record<string, unknown>, depth = 0): s
 
 export function computeConfigurationGroups(
   moduleId: string,
-  mapping: ChannelMappingData,
+  usesToModule: Record<string, string>,
   channels: LiveChannelDetail[],
 ): ConfigurationGroup[] {
   const relevantUses = new Set(
-    Object.entries(mapping.usesToModuleId)
+    Object.entries(usesToModule)
       .filter(([, mappedModuleId]) => mappedModuleId === moduleId)
       .map(([uses]) => uses),
   );

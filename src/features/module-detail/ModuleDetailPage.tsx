@@ -3,9 +3,9 @@ import { EntityDetail } from "../../components/EntityDetail";
 import { LoadingNote, ErrorNote } from "../../components/AsyncState";
 import { useRemoteData } from "../../hooks/useRemoteData";
 import { useChannelList } from "../../hooks/useChannelList";
+import { useModuleRegistry } from "../../hooks/useModuleRegistry";
 import { getModuleById, getPhaseInfo, type ModulesData } from "../../data/modules";
 import { computeConfigurationGroups, groupConfigurationsByStep } from "../../data/liveConfigurations";
-import type { ChannelMappingData } from "../../data/types";
 import "./module-configurations.css";
 
 const NO_CONFIG_REASON: Record<string, string> = {
@@ -19,13 +19,12 @@ const NO_CONFIG_REASON: Record<string, string> = {
   "media-fetch": "Acionado internamente por `footage-acquisition` via service binding — não tem etapa própria no DAG do canal.",
   "caption-motion":
     "Sem etapa própria no DAG — configurado dentro de with.captions da etapa build-manifest. Veja as configurações de render-manifest.",
-  "chunked-narration": "Nenhum canal real declara `requestMode: chunked` ainda — ver Melhorias e o filtro por canal na listagem de módulos.",
 };
 
 export function ModuleDetailPage() {
   const { moduleId } = useParams<{ moduleId: string }>();
   const modulesState = useRemoteData<ModulesData>("modules");
-  const mappingState = useRemoteData<ChannelMappingData>("channel-mapping");
+  const mappingState = useModuleRegistry();
   const channelListState = useChannelList();
 
   if (modulesState.kind === "loading") {
