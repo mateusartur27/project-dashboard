@@ -20,6 +20,9 @@ dist-ssr
 # Conteúdo real do sistema de origem: fica só no Cloudflare KV, nunca no Git.
 private-data/
 
+# Configuração local de preview do agente de código
+.claude/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

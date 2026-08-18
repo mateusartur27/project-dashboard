@@ -1,5 +1,6 @@
 import { GroupedCardGrid } from "../../components/GroupedCardGrid";
 import { LoadingNote, ErrorNote } from "../../components/AsyncState";
+import { StalenessNotice } from "../../components/StalenessNotice";
 import { useRemoteData } from "../../hooks/useRemoteData";
 import type { RulesData } from "../../data/rules";
 import type { ArchitectureData } from "../../data/types";
@@ -30,6 +31,7 @@ export function RulesPage() {
       <GroupedCardGrid
         heading="Regras e arquitetura"
         intro="As regras que qualquer mudança no sistema precisa seguir, e um resumo básico de como o sistema é montado."
+        controls={<StalenessNotice docKey="rules" />}
         groups={[
           {
             key: "rules",
@@ -52,6 +54,7 @@ export function RulesPage() {
 
       <section className="architecture-overview">
         <h2>Arquitetura, de forma básica</h2>
+        <StalenessNotice docKey="architecture" />
 
         <div className="architecture-style">
           <span className="architecture-style-label">{architecture.style.label}</span>

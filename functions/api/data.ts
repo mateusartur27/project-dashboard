@@ -12,7 +12,7 @@ interface RequestContext {
   env: Env;
 }
 
-const ALLOWED_KEYS = new Set(["modules", "improvements", "rules", "architecture", "planned-channels"]);
+const ALLOWED_KEYS = new Set(["modules", "improvements", "rules", "architecture", "planned-channels", "docs-sync-state"]);
 
 function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json" } });

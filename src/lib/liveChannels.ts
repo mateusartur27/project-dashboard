@@ -29,3 +29,19 @@ export async function fetchModuleRegistry(): Promise<Record<string, string>> {
   const body = (await response.json()) as { usesToModule: Record<string, string> };
   return body.usesToModule;
 }
+
+export interface DocStatus {
+  path: string;
+  sha256: string;
+  generatedAt: string;
+}
+
+/** Hash real de cada documento transcrito à mão, gerado no deploy do sistema real. */
+export async function fetchDocsStatus(): Promise<Record<string, DocStatus>> {
+  const response = await fetch("/api/docs-status", { credentials: "same-origin" });
+  if (!response.ok) {
+    throw new Error(`docs-status respondeu ${response.status}`);
+  }
+  const body = (await response.json()) as { docs: Record<string, DocStatus> };
+  return body.docs;
+}

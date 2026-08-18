@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { GroupedCardGrid } from "../../components/GroupedCardGrid";
 import { LoadingNote, ErrorNote } from "../../components/AsyncState";
+import { StalenessNotice } from "../../components/StalenessNotice";
 import { useEditableRemoteData } from "../../hooks/useEditableRemoteData";
 import { improvementsByCategory, type ImprovementsData } from "../../data/improvements";
 import type { ImprovementDefinition } from "../../data/types";
@@ -38,9 +39,12 @@ export function ImprovementsPage() {
         heading="Melhorias a implementar"
         intro="Backlog real de expansão do sistema. Cada card mostra se o item já foi resolvido, se recebeu um contorno paliativo ou se ainda está em aberto — clique para o contexto completo."
         controls={
-          <button type="button" className="add-entity-btn" onClick={() => setShowForm(true)}>
-            + Nova melhoria
-          </button>
+          <>
+            <StalenessNotice docKey="improvements" />
+            <button type="button" className="add-entity-btn" onClick={() => setShowForm(true)}>
+              + Nova melhoria
+            </button>
+          </>
         }
         groups={groups}
         renderItem={(improvement) => <ImprovementCard key={improvement.id} improvement={improvement} />}

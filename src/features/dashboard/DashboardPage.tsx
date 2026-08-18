@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { GroupedCardGrid } from "../../components/GroupedCardGrid";
 import { LoadingNote, ErrorNote } from "../../components/AsyncState";
+import { StalenessNotice } from "../../components/StalenessNotice";
 import { useRemoteData } from "../../hooks/useRemoteData";
 import { useModuleRegistry } from "../../hooks/useModuleRegistry";
 import { modulesByPhase, type ModulesData } from "../../data/modules";
@@ -69,7 +70,12 @@ export function DashboardPage() {
     <GroupedCardGrid
       heading="Módulos do sistema"
       intro="Cada card é um módulo real do control plane, agrupado pela fase do pipeline declarativo que ele implementa. Clique em um card para ver entrada, saída, consumidores e as decisões que o restringem."
-      controls={<ChannelFilter channels={channels} selected={selectedChannelId} onChange={setSelectedChannelId} />}
+      controls={
+        <>
+          <StalenessNotice docKey="modules" />
+          <ChannelFilter channels={channels} selected={selectedChannelId} onChange={setSelectedChannelId} />
+        </>
+      }
       groups={groups}
       renderItem={(module) => (
         <ModuleCard

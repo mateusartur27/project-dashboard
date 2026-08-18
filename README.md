@@ -54,6 +54,12 @@ Editar o resto por fora do painel:
 
 Se `private-data/` não existir (checkout novo), crie os arquivos com o formato que `src/data/types.ts` descreve antes do primeiro `sync-data`.
 
+### Aviso de conteúdo desatualizado
+
+`modules`, `improvements`, `rules` e `architecture` são transcrições manuais — não dá para computá-las ao vivo sem perder qualidade de exibição, ao contrário das configurações e da atribuição de módulos acima. Para não mostrar conteúdo desatualizado calado, o painel compara o hash SHA-256 de cada documento real (exposto por `/api/docs-status`, no control plane) contra o hash de quando a transcrição foi sincronizada por último (chave `docs-sync-state` no KV). Quando divergem, aparece um aviso "pode estar desatualizado" na página — não corrige nada sozinho.
+
+Depois de editar qualquer um dos 4 arquivos e rodar `sync-data`, atualize também `docs-sync-state` com o hash atual de `/api/docs-status` e sincronize essa chave (mesmo processo acima) para o aviso sumir.
+
 ## Deploy
 
 ```powershell
