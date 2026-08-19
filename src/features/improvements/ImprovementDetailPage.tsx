@@ -5,6 +5,7 @@ import { LoadingNote, ErrorNote } from "../../components/AsyncState";
 import { useEditableRemoteData } from "../../hooks/useEditableRemoteData";
 import { getImprovementById, getImprovementCategory, type ImprovementsData } from "../../data/improvements";
 import type { ImprovementDefinition, PendingImprovementEntry } from "../../data/types";
+import { upsertPendingEntry } from "../../lib/pendingImprovements";
 import { statusBadge } from "./statusBadge";
 import { ImprovementFormModal } from "./ImprovementFormModal";
 import "../../components/form.css";
@@ -36,7 +37,7 @@ export function ImprovementDetailPage() {
 
   async function submitPending(entry: Omit<PendingImprovementEntry, "id" | "submittedAt">) {
     const current = pending.state.kind === "ready" ? pending.state.data : [];
-    await pending.save([...current, { ...entry, id: crypto.randomUUID(), submittedAt: new Date().toISOString() }]);
+    await pending.save(upsertPendingEntry(current, entry));
   }
 
   const handleUpdate = async (updated: ImprovementDefinition) => {
@@ -54,7 +55,18 @@ export function ImprovementDetailPage() {
   const handleDelete = async () => {
     if (!window.confirm(`Sugerir exclusão de "${improvement.title}"? O card continua visível até ser revisado.`)) return;
     setDeleting(true);
-    await submitPending({ action: "delete", targetId: improvement.id });
+
+    const currentPending = pending.state.kind === "ready" ? pending.state.data : [];
+    const existingEntry = currentPending.find((entry) => (entry.targetId ?? entry.improvement?.id) === improvement.id);
+
+    if (existingEntry?.action === "create") {
+      // Nunca existiu em docs/future-improvements.md — não há nada para
+      // revisar depois, então remove de verdade em vez de enfileirar.
+      await save({ ...data, improvements: data.improvements.filter((item) => item.id !== improvement.id) });
+      await pending.save(currentPending.filter((entry) => entry.id !== existingEntry.id));
+    } else {
+      await submitPending({ action: "delete", targetId: improvement.id });
+    }
     navigate("/");
   };
 

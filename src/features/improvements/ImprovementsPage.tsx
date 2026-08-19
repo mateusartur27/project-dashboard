@@ -6,6 +6,7 @@ import { PendingImprovementsNotice } from "../../components/PendingImprovementsN
 import { useEditableRemoteData } from "../../hooks/useEditableRemoteData";
 import { improvementsByCategory, type ImprovementsData } from "../../data/improvements";
 import type { ImprovementDefinition, PendingImprovementEntry } from "../../data/types";
+import { upsertPendingEntry } from "../../lib/pendingImprovements";
 import { ImprovementCard } from "./ImprovementCard";
 import { ImprovementFormModal } from "./ImprovementFormModal";
 
@@ -40,13 +41,7 @@ export function ImprovementsPage() {
     await save({ ...data, improvements: [...data.improvements, pendingImprovement] });
 
     const currentPending = pending.state.kind === "ready" ? pending.state.data : [];
-    const entry: PendingImprovementEntry = {
-      id: crypto.randomUUID(),
-      action: "create",
-      submittedAt: new Date().toISOString(),
-      improvement: pendingImprovement,
-    };
-    await pending.save([...currentPending, entry]);
+    await pending.save(upsertPendingEntry(currentPending, { action: "create", improvement: pendingImprovement }));
     setShowForm(false);
     setSubmitted(true);
   }
