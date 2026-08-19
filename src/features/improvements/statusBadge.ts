@@ -9,5 +9,7 @@ export function statusBadge(status: ImprovementStatus): EntityCardBadge {
       return { label: "Mitigado", tone: "warn" };
     case "open":
       return { label: "Aberto", tone: "neutral" };
+    case "pending":
+      return { label: "Pendente", tone: "info" };
   }
 }

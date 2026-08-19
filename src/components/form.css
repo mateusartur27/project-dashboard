@@ -32,6 +32,15 @@
   outline-offset: -1px;
 }
 
+.form-hint {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 12.5px;
+  margin-bottom: 14px;
+}
+
 .form-error {
   background: var(--danger-soft);
   color: var(--danger);

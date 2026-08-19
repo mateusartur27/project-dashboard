@@ -31,7 +31,7 @@ export interface ModuleDefinition {
   notes?: string;
 }
 
-export type ImprovementStatus = "resolved" | "mitigated" | "open";
+export type ImprovementStatus = "resolved" | "mitigated" | "open" | "pending";
 
 export type ImprovementCategoryId =
   | "media"
@@ -57,6 +57,22 @@ export interface ImprovementDefinition {
   summary: string;
   detail: string;
   requestedBy?: string;
+}
+
+export type PendingImprovementAction = "create" | "edit" | "delete";
+
+/**
+ * Sugestão feita direto no painel, ainda não incorporada a
+ * `docs/future-improvements.md`. Nunca escreve em `improvements` na hora —
+ * fica aqui até uma sessão de IA revisar e incorporar ao documento fonte,
+ * para as duas fontes (documento e KV) nunca divergirem em silêncio.
+ */
+export interface PendingImprovementEntry {
+  id: string;
+  action: PendingImprovementAction;
+  targetId?: string;
+  submittedAt: string;
+  improvement?: ImprovementDefinition;
 }
 
 export interface LiveChannelSummary {

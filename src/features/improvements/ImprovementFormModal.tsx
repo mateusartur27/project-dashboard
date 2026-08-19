@@ -4,6 +4,7 @@ import type { ImprovementCategoryInfo, ImprovementDefinition, ImprovementStatus 
 import "../../components/form.css";
 
 const STATUS_OPTIONS: Array<{ value: ImprovementStatus; label: string }> = [
+  { value: "pending", label: "Pendente" },
   { value: "open", label: "Aberto" },
   { value: "mitigated", label: "Mitigado" },
   { value: "resolved", label: "Resolvido" },
@@ -66,7 +67,7 @@ export function ImprovementFormModal({
         id,
         title: title.trim(),
         category: category as ImprovementDefinition["category"],
-        status,
+        status: existing ? status : "pending",
         summary: summary.trim(),
         detail: detail.trim() || summary.trim(),
         requestedBy: requestedBy.trim() || undefined,
@@ -81,6 +82,10 @@ export function ImprovementFormModal({
     <Modal title={existing ? "Editar melhoria" : "Nova melhoria"} onClose={onClose}>
       <form onSubmit={handleSubmit}>
         {error && <div className="form-error">{error}</div>}
+
+        {!existing && (
+          <p className="form-hint">Aparece como card com status "Pendente" até ser revisada e incorporada ao documento fonte.</p>
+        )}
 
         <label className="form-field">
           <span>Título</span>
@@ -102,20 +107,22 @@ export function ImprovementFormModal({
           </select>
         </label>
 
-        <label className="form-field">
-          <span>Status</span>
-          <select
-            className="form-select"
-            value={status}
-            onChange={(event) => setStatus(event.target.value as ImprovementStatus)}
-          >
-            {STATUS_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </label>
+        {existing && (
+          <label className="form-field">
+            <span>Status</span>
+            <select
+              className="form-select"
+              value={status}
+              onChange={(event) => setStatus(event.target.value as ImprovementStatus)}
+            >
+              {STATUS_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
 
         <label className="form-field">
           <span>Resumo (aparece no card)</span>

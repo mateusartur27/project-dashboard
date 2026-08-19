@@ -2,15 +2,18 @@ import { useState } from "react";
 import { GroupedCardGrid } from "../../components/GroupedCardGrid";
 import { LoadingNote, ErrorNote } from "../../components/AsyncState";
 import { StalenessNotice } from "../../components/StalenessNotice";
+import { PendingImprovementsNotice } from "../../components/PendingImprovementsNotice";
 import { useEditableRemoteData } from "../../hooks/useEditableRemoteData";
 import { improvementsByCategory, type ImprovementsData } from "../../data/improvements";
-import type { ImprovementDefinition } from "../../data/types";
+import type { ImprovementDefinition, PendingImprovementEntry } from "../../data/types";
 import { ImprovementCard } from "./ImprovementCard";
 import { ImprovementFormModal } from "./ImprovementFormModal";
 
 export function ImprovementsPage() {
   const { state, save } = useEditableRemoteData<ImprovementsData>("improvements");
+  const pending = useEditableRemoteData<PendingImprovementEntry[]>("pending-improvements");
   const [showForm, setShowForm] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   if (state.kind === "loading") {
     return <LoadingNote label="Carregando melhorias…" />;
@@ -29,8 +32,23 @@ export function ImprovementsPage() {
   }));
 
   async function handleCreate(improvement: ImprovementDefinition) {
-    await save({ ...data, improvements: [...data.improvements, improvement] });
+    const pendingImprovement: ImprovementDefinition = { ...improvement, status: "pending" };
+
+    // Aparece como card imediatamente, com status "Pendente" — visível, mas
+    // não é a versão final: o documento fonte (docs/future-improvements.md)
+    // só reflete isso depois de uma sessão de IA revisar a fila abaixo.
+    await save({ ...data, improvements: [...data.improvements, pendingImprovement] });
+
+    const currentPending = pending.state.kind === "ready" ? pending.state.data : [];
+    const entry: PendingImprovementEntry = {
+      id: crypto.randomUUID(),
+      action: "create",
+      submittedAt: new Date().toISOString(),
+      improvement: pendingImprovement,
+    };
+    await pending.save([...currentPending, entry]);
     setShowForm(false);
+    setSubmitted(true);
   }
 
   return (
@@ -41,8 +59,14 @@ export function ImprovementsPage() {
         controls={
           <>
             <StalenessNotice docKey="improvements" />
+            <PendingImprovementsNotice />
+            {submitted && (
+              <p className="pending-improvements-hint">
+                Sugestão enviada — já aparece como card com status "Pendente" até ser revisada.
+              </p>
+            )}
             <button type="button" className="add-entity-btn" onClick={() => setShowForm(true)}>
-              + Nova melhoria
+              + Sugerir melhoria
             </button>
           </>
         }

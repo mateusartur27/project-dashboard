@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
+import type { EntityCardBadge } from "./EntityCard";
 import "./entity-detail.css";
 
 export interface EntityDetailField {
@@ -28,7 +29,7 @@ export function EntityDetail({
   backTo: string;
   backLabel: string;
   categoryLabel?: string;
-  badge?: { label: string; tone: "ok" | "warn" | "neutral" };
+  badge?: EntityCardBadge;
   title: string;
   summary: string;
   meta?: string;

@@ -65,6 +65,11 @@
   background: var(--bg);
 }
 
+.entity-card-badge-info {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
 .entity-card-summary {
   margin: 0;
   font-size: 13px;

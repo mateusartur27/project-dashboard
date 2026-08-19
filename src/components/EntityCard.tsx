@@ -3,7 +3,7 @@ import "./entity-card.css";
 
 export interface EntityCardBadge {
   label: string;
-  tone: "ok" | "warn" | "neutral";
+  tone: "ok" | "warn" | "neutral" | "info";
 }
 
 export function EntityCard({
