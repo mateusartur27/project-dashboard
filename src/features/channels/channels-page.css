@@ -4,6 +4,10 @@
   gap: 40px;
 }
 
+.channels-page-search {
+  margin-bottom: -16px;
+}
+
 .planned-channels-section {
   padding-top: 24px;
   border-top: 1px solid var(--border);

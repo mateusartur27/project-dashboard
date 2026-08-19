@@ -3,18 +3,23 @@ import { GroupedCardGrid } from "../../components/GroupedCardGrid";
 import { LoadingNote, ErrorNote } from "../../components/AsyncState";
 import { StalenessNotice } from "../../components/StalenessNotice";
 import { PendingImprovementsNotice } from "../../components/PendingImprovementsNotice";
+import { SearchField } from "../../components/SearchField";
 import { useEditableRemoteData } from "../../hooks/useEditableRemoteData";
+import { matchesSearch } from "../../lib/search";
 import { improvementsByCategory, type ImprovementsData } from "../../data/improvements";
-import type { ImprovementDefinition, PendingImprovementEntry } from "../../data/types";
+import type { ImprovementDefinition, ImprovementStatus, PendingImprovementEntry } from "../../data/types";
 import { upsertPendingEntry } from "../../lib/pendingImprovements";
 import { ImprovementCard } from "./ImprovementCard";
 import { ImprovementFormModal } from "./ImprovementFormModal";
+import { StatusFilter } from "./StatusFilter";
 
 export function ImprovementsPage() {
   const { state, save } = useEditableRemoteData<ImprovementsData>("improvements");
   const pending = useEditableRemoteData<PendingImprovementEntry[]>("pending-improvements");
   const [showForm, setShowForm] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<ImprovementStatus[]>([]);
 
   if (state.kind === "loading") {
     return <LoadingNote label="Carregando melhorias…" />;
@@ -25,7 +30,12 @@ export function ImprovementsPage() {
   }
 
   const { data } = state;
-  const groups = improvementsByCategory(data).map((group) => ({
+  const filteredImprovements = data.improvements.filter((improvement) => {
+    const matchesStatus = statusFilter.length === 0 || statusFilter.includes(improvement.status);
+    const matchesQuery = matchesSearch(search, improvement.title, improvement.summary, improvement.detail);
+    return matchesStatus && matchesQuery;
+  });
+  const groups = improvementsByCategory({ ...data, improvements: filteredImprovements }).map((group) => ({
     key: group.category.id,
     title: group.category.label,
     description: group.category.description,
@@ -53,6 +63,8 @@ export function ImprovementsPage() {
         intro="Backlog real de expansão do sistema. Cada card mostra se o item já foi resolvido, se recebeu um contorno paliativo ou se ainda está em aberto — clique para o contexto completo."
         controls={
           <>
+            <SearchField value={search} onChange={setSearch} placeholder="Pesquisar melhorias…" />
+            <StatusFilter selected={statusFilter} onChange={setStatusFilter} />
             <StalenessNotice docKey="improvements" />
             <PendingImprovementsNotice />
             {submitted && (

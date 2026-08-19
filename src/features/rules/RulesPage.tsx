@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { GroupedCardGrid } from "../../components/GroupedCardGrid";
 import { LoadingNote, ErrorNote } from "../../components/AsyncState";
 import { StalenessNotice } from "../../components/StalenessNotice";
+import { SearchField } from "../../components/SearchField";
 import { useRemoteData } from "../../hooks/useRemoteData";
+import { matchesSearch } from "../../lib/search";
 import type { RulesData } from "../../data/rules";
 import type { ArchitectureData } from "../../data/types";
 import { RuleCard } from "./RuleCard";
@@ -10,6 +13,7 @@ import "./rules-page.css";
 export function RulesPage() {
   const rulesState = useRemoteData<RulesData>("rules");
   const architectureState = useRemoteData<ArchitectureData>("architecture");
+  const [search, setSearch] = useState("");
 
   if (rulesState.kind === "loading" || architectureState.kind === "loading") {
     return <LoadingNote label="Carregando regras e arquitetura…" />;
@@ -25,19 +29,25 @@ export function RulesPage() {
 
   const { rules, checklist } = rulesState.data;
   const architecture = architectureState.data;
+  const filteredRules = rules.filter((rule) => matchesSearch(search, rule.title, rule.rule, rule.source));
 
   return (
     <div>
       <GroupedCardGrid
         heading="Regras e arquitetura"
         intro="As regras que qualquer mudança no sistema precisa seguir, e um resumo básico de como o sistema é montado."
-        controls={<StalenessNotice docKey="rules" />}
+        controls={
+          <>
+            <SearchField value={search} onChange={setSearch} placeholder="Pesquisar regras…" />
+            <StalenessNotice docKey="rules" />
+          </>
+        }
         groups={[
           {
             key: "rules",
             title: "Regras não negociáveis",
             description: "Valem para qualquer mudança de código, humana ou por IA.",
-            items: rules,
+            items: filteredRules,
           },
         ]}
         renderItem={(rule) => <RuleCard key={rule.id} rule={rule} />}

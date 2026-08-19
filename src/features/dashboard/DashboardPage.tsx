@@ -3,8 +3,10 @@ import { useSearchParams } from "react-router-dom";
 import { GroupedCardGrid } from "../../components/GroupedCardGrid";
 import { LoadingNote, ErrorNote } from "../../components/AsyncState";
 import { StalenessNotice } from "../../components/StalenessNotice";
+import { SearchField } from "../../components/SearchField";
 import { useRemoteData } from "../../hooks/useRemoteData";
 import { useModuleRegistry } from "../../hooks/useModuleRegistry";
+import { matchesSearch } from "../../lib/search";
 import { modulesByPhase, type ModulesData } from "../../data/modules";
 import { deriveUsesModuleIds, isModuleUsedByChannel } from "../../data/channels";
 import { fetchChannelDetail, fetchChannelSummaries } from "../../lib/liveChannels";
@@ -20,6 +22,7 @@ export function DashboardPage() {
   const [channels, setChannels] = useState<LiveChannelSummary[]>([]);
   const [selectedChannelId, setSelectedChannelId] = useState<string | null>(() => searchParams.get("channel"));
   const [usedModuleIds, setUsedModuleIds] = useState<string[] | null>(null);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetchChannelSummaries()
@@ -59,7 +62,10 @@ export function DashboardPage() {
     return <ErrorNote message={mappingState.message} />;
   }
 
-  const groups = modulesByPhase(modulesState.data).map((group) => ({
+  const filteredModules = modulesState.data.modules.filter((module) =>
+    matchesSearch(search, module.name, module.summary, module.id, module.sourcePath),
+  );
+  const groups = modulesByPhase({ ...modulesState.data, modules: filteredModules }).map((group) => ({
     key: group.phase.id,
     title: group.phase.label,
     description: group.phase.description,
@@ -72,6 +78,7 @@ export function DashboardPage() {
       intro="Cada card é um módulo real do control plane, agrupado pela fase do pipeline declarativo que ele implementa. Clique em um card para ver entrada, saída, consumidores e as decisões que o restringem."
       controls={
         <>
+          <SearchField value={search} onChange={setSearch} placeholder="Pesquisar módulos…" />
           <StalenessNotice docKey="modules" />
           <ChannelFilter channels={channels} selected={selectedChannelId} onChange={setSelectedChannelId} />
         </>
